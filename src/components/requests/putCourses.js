@@ -5,7 +5,6 @@ export const Put = (name, description, hoursTotal, id) => {
 
   var raw = JSON.stringify({
     active: true,
-    createdDate: new Date().toLocaleTimeString(),
     deleted: false,
     description: description,
     hoursTotal: hoursTotal,
