@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import 'typeface-roboto';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Dashboards from './components/dashboard/Dashboard';
+import Dashboard from './components/dashboard/Dashboard';
 import SignIn from "./components/SignIn/SignIn"
 
 
@@ -15,7 +15,7 @@ class App extends React.Component {
 <Router>
 
           <Switch >
-            <Route path="/Dashboard" component={Dashboards}/>
+            <Route path="/Dashboard" component={Dashboard}/>
             <Route path="/" component={SignIn} />          
           </Switch>
         </Router>

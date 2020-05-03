@@ -1,5 +1,3 @@
-import Dashboards from "../dashboard/Dashboard";
-
 const verifyUserStatus = () => {
   const token = localStorage.getItem("token");
 

@@ -10,7 +10,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import ListCourses from "../courses/ListCourses";
 import { Link } from "react-router-dom";
 
-class Dashboards extends React.Component {
+class Dashboard extends React.Component {
   state = {
     isAuthorized: true,
   };
@@ -76,4 +76,4 @@ class Dashboards extends React.Component {
     );
   }
 }
-export default Dashboards;
+export default Dashboard;
