@@ -1,6 +1,5 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,68 +7,73 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import CoursesList from "../courses/CoursesList";
+import ListCourses from "../courses/ListCourses";
+import { Link } from "react-router-dom";
 
+class Dashboards extends React.Component {
+  state = {
+    isAuthorized: true,
+  };
 
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
+  classes = {
+    title: {
+      flexGrow: 1,
+      justifyContent: "space-between",
+    },
 
-const drawerWidth = 240;
+    user: {
+      color: "white",
+    },
+    link: {
+      color: "white",
+      outline: "none",
+    },
+  };
+  fixedHeightPaper = clsx(this.classes.paper, this.classes.fixedHeight);
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    flexGrow: 1,
-    justifyContent: "space-between",
-  },
+  handleLogut = () => {
+    window.location = "/";
+  };
 
-  user: {
-    color: "white",
-  },
-}));
-
-export default function Dashboard() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton color="white">
-            <AccountBoxIcon className={classes.user} />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h4"
-            color="inherit"
-            noWrap
-            className={classes.title}
+  render() {
+    return (
+      <div className={this.classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="absolute"
+          className={clsx(
+            this.classes.appBar && this.Copyrightclasses.appBarShift
+          )}
+        >
+          <Toolbar
+            className="navbar"
+            styles={{ justifyContent: "space-between", flexGrow: "1" }}
           >
-            Courses
-          </Typography>
-          <IconButton color="inherit">
-            <ExitToAppIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.content} style={{ padding: "100px" }}>
-        <CoursesList />
-      </main>
-    </div>
-  );
+            <IconButton color="white">
+              <AccountBoxIcon style={{ color: "white" }} />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              className={this.classes.title}
+              styles={{ justifyContent: "space-between", flexGrow: "1" }}
+            >
+              Artem: Training Case
+            </Typography>
+            <Link to="/">
+              <IconButton style={{ color: "white" }} onClick={this.handleLogut}>
+                <ExitToAppIcon />
+              </IconButton>
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <main className={this.classes.content} style={{ padding: "100px" }}>
+          <ListCourses />
+        </main>
+      </div>
+    );
+  }
 }
+export default Dashboards;

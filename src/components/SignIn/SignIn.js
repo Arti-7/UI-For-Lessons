@@ -1,72 +1,74 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
+import React from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Dashboards from "../dashboard/Dashboard";
+import VerifyUserStatus from "../requests/VerifyUser";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
-const IfError = (check) => {
-if(!check) {
-    return "error"
-}
-}
-
-
 
 const useStyles = makeStyles((theme) => ({
-
-    
-
-
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    display: "none",
+  },
 }));
 
 export default function SignIn() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  let user = null;
+  let isAuthorized = false;
 
+  const [state, setState] = React.useState({
     ifError: false,
-    
   });
+
+  const handleErrorMessage = () => {
+    document.getElementById("alert").style = "display: block"
+      ? (document.getElementById("alert").style = "display: none")
+      : (document.getElementById("alert").style = "display: block");
+  };
+
   const handleLogin = (event) => {
     event.preventDefault();
+    VerifyUserStatus();
     var myHeaders = new Headers();
     myHeaders.append("tenant", "uitest");
     myHeaders.append("withCredentials", "true");
@@ -82,34 +84,42 @@ export default function SignIn() {
       headers: myHeaders,
       body: raw,
       redirect: "follow",
-      credentials: "include"
+      credentials: "include",
     };
 
     fetch("https://api.esch.pl/api/auth/login", requestOptions)
-    .then(data => {localStorage.setItem("token", data.accessToken)})
-    .catch((error) => {console.log(error)});
-
-
-fetch("https://api.esch.pl/api/auth/login", requestOptions)
       .then((response) => {
-        if(response.ok)
-        {window.location = "/Dashboard"}
-        else {alert()}
- 
+        if (response.ok) {
+          isAuthorized = true;
+        }
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.accessToken);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    fetch("https://api.esch.pl/api/auth/login", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          window.location = "/Dashboard";
+        } else {
+          document.getElementById("alert").style = "display: block";
+        }
       })
       .catch((error) => console.log(error));
-
-}
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-      <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h4">
           Artem: Test UI
         </Typography>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -125,7 +135,7 @@ fetch("https://api.esch.pl/api/auth/login", requestOptions)
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"           
+            autoComplete="email"
             autoFocus
           />
           <TextField
@@ -139,6 +149,23 @@ fetch("https://api.esch.pl/api/auth/login", requestOptions)
             id="password"
             autoComplete="current-password"
           />
+          <div
+            class="alert alert-danger alert-dismissible"
+            role="alert"
+            style={{ display: "none" }}
+            id="alert"
+          >
+            Incorrect email or password
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+              onClick={handleErrorMessage}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -153,7 +180,6 @@ fetch("https://api.esch.pl/api/auth/login", requestOptions)
           >
             Sign In
           </Button>
-          <span></span>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

@@ -2,31 +2,26 @@ import React from 'react';
 import './App.css';
 import 'typeface-roboto';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import LoginView from './components/signPage/LoginPage';
-import Dashboard from './components/dashboard/Dashboard';
-import secondCopyLP from './components/signPage/secondCopyLP';
-import thirdCopy from "./components/signPage/thirdCopy";
-import EditCourse from "./components/courses/EditCourse";
-import useStyles from "./components/signPage/newLogin"
+import Dashboards from './components/dashboard/Dashboard';
+import SignIn from "./components/SignIn/SignIn"
 
 
 
+class App extends React.Component {
 
-
-function App() {
+  render(){
   return (
     <div className="App">
 <Router>
 
           <Switch >
-            <Route path="/Dashboard" component={Dashboard} />
-            <Route path="/courses/:id" component={EditCourse} />
-            <Route path="/" component={useStyles} />          
+            <Route path="/Dashboard" component={Dashboards}/>
+            <Route path="/" component={SignIn} />          
           </Switch>
         </Router>
     </div>
     
   );
-}
+}}
 
 export default App;
